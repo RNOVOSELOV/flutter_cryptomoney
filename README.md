@@ -1,16 +1,27 @@
-# cryptomoney
+[<img src="https://storage.googleapis.com/cms-storage-bucket/6a07d8a62f4308d2b854.svg"  width="150">](https://flutter.dev/)
+#  🪙 &nbsp;&nbsp;Coinscap API
+<br/>
+<p align="center">
+  <img src="https://github.com/RNOVOSELOV/flutter_cryptomoney/blob/main/resources/supergeroes.gif"/>
+</p>
 
-Test Flutter project.
+## О проекте
 
-## Getting Started
+Приложение, реализующее открытое [API](https://splash.coincap.io/) стоимости криптовалют.
 
-This project is a starting point for a Flutter application.
+**Внимание!**
+Для коректного запуска приложения необходимо:
+1. Получить токен на сайте https://splash.coincap.io/.
+2. В корне проекта лежит файл c именем "crypto.env".
+3. Добавить в файл полученный токен в формате:
+```sh
+AUTH_TOKEN=RECEIVED_AUTH_TOKEN
+```
+Например
+```sh
+AUTH_TOKEN=826387a2044bb822a86472968f30ed6db391fa584b056949f1645a9e30cdc62b
+```
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+<!-- My superhero API token. Add to root '.env' file:
+AUTH_TOKEN=826387a2094bb822a66472968f37ed6db391fa584b056949f1645a9e30cdc62b
+-->
