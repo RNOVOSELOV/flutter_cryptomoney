@@ -10,3 +10,9 @@ final class CryptoListPageLoadedEvent extends CryptoListEvent {
   @override
   List<Object?> get props => [];
 }
+final class CryptoNeedDataEvent extends CryptoListEvent {
+  const CryptoNeedDataEvent();
+
+  @override
+  List<Object?> get props => [];
+}

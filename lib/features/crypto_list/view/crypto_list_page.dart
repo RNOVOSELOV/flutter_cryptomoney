@@ -57,12 +57,29 @@ class _CoinsListWidget extends StatefulWidget {
 
 class _CoinsListWidgetState extends State<_CoinsListWidget> {
   late final List<CoinDataDto> coins;
-  final Random _random = Random();
+  late final Random _random;
+  late final ScrollController _scrollController;
 
   @override
   void initState() {
     super.initState();
     coins = [];
+    _random = Random();
+    _scrollController = ScrollController();
+
+    WidgetsBinding.instance.addPostFrameCallback(
+      (_) => _scrollController.addListener(() {
+        if (_scrollController.position.extentAfter < 500) {
+          context.read<CryptoListBloc>().add(CryptoNeedDataEvent());
+        }
+      }),
+    );
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
   }
 
   Color _generateRandomColor() {
@@ -84,7 +101,7 @@ class _CoinsListWidgetState extends State<_CoinsListWidget> {
             child: Center(
               child: Text(
                 'Ошибка получения данных\n\nПроверьте наличие crypto.env файла в корне проекта c содержимым в формате:\n'
-                    'AUTH_TOKEN=YOUR_AUTH_TOKEN',
+                'AUTH_TOKEN=YOUR_AUTH_TOKEN',
                 textAlign: TextAlign.center,
                 style: context.theme.cryptoText,
               ),
@@ -94,9 +111,11 @@ class _CoinsListWidgetState extends State<_CoinsListWidget> {
         return coins.isEmpty
             ? SizedBox.shrink()
             : ListView.builder(
+              controller: _scrollController,
               itemCount: coins.length,
               itemBuilder: (context, index) {
                 return CoinItemWidget(
+                  key: ValueKey(index),
                   coin: coins.elementAt(index),
                   color: _generateRandomColor(),
                 );
@@ -107,11 +126,24 @@ class _CoinsListWidgetState extends State<_CoinsListWidget> {
   }
 }
 
-class CoinItemWidget extends StatelessWidget {
+class CoinItemWidget extends StatefulWidget {
   const CoinItemWidget({super.key, required this.coin, required this.color});
 
   final CoinDataDto coin;
   final Color color;
+
+  @override
+  State<CoinItemWidget> createState() => _CoinItemWidgetState();
+}
+
+class _CoinItemWidgetState extends State<CoinItemWidget> {
+  late final Color keepsColor;
+
+  @override
+  void initState() {
+    super.initState();
+    keepsColor = widget.color;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -129,15 +161,21 @@ class CoinItemWidget extends StatelessWidget {
                 width: 56,
                 height: 56,
                 decoration: BoxDecoration(
-                  color: color.withValues(alpha: 0.1),
+                  color: keepsColor.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.all(Radius.circular(18)),
                 ),
               ),
               SizedBox(width: 16),
-              Text(coin.symbol.toUpperCase(), style: context.theme.cryptoText),
+              Text(
+                widget.coin.symbol.toUpperCase(),
+                style: context.theme.cryptoText,
+              ),
             ],
           ),
-          Text(coin.priceUsd.toUpperCase(), style: context.theme.cryptoText),
+          Text(
+            widget.coin.priceUsd.toUpperCase(),
+            style: context.theme.cryptoText,
+          ),
         ],
       ),
     );
