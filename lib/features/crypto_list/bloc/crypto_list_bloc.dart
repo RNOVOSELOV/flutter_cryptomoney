@@ -1,9 +1,13 @@
 import 'dart:async';
+import 'dart:math';
+import 'dart:ui';
 
 import 'package:cryptomoney/data/http/api/api_repository.dart';
 import 'package:cryptomoney/data/http/api/api_service.dart';
 import 'package:cryptomoney/data/http/dio_builder.dart';
 import 'package:cryptomoney/data/http/token_interceptor.dart';
+import 'package:cryptomoney/extensions/string_extensions.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:cryptomoney/data/http/api/dto/coin_dto.dart';
 import 'package:equatable/equatable.dart';
@@ -17,6 +21,7 @@ part 'crypto_list_state.dart';
 
 class CryptoListBloc extends Bloc<CryptoListEvent, CryptoListState> {
   late final ApiRepository _api;
+  final Random _random = Random();
 
   static const _limit = 15;
   PaginationInfo paginationInfo = PaginationInfo.initial();
@@ -70,10 +75,22 @@ class CryptoListBloc extends Bloc<CryptoListEvent, CryptoListState> {
         canLoadMore: canLoadMore,
         lastLoadedPage: paginationInfo.lastLoadedPage + 1,
       );
-      emit(CryptoListDataReceivedState(coins: data.right));
+      final List<({CoinDataDto coin, Color color})> coinsData =
+          data.right
+              .map((coin) => (coin: coin, color: _generateRandomColor()))
+              .toList();
+
+      emit(CryptoListDataReceivedState(coins: coinsData));
     } else {
       emit(CryptoListErrorReceivedState(error: data.left));
     }
     loading = false;
+  }
+
+  Color _generateRandomColor() {
+    final int colorValue = _random.nextInt(16777216);
+    String hexColor =
+        '#${colorValue.toRadixString(16).padLeft(6, '0').toUpperCase()}';
+    return hexColor.parseColor();
   }
 }

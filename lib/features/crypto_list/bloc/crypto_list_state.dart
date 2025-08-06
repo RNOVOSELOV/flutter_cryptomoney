@@ -15,7 +15,7 @@ final class CryptoListProgressState extends CryptoListState {
 }
 
 final class CryptoListDataReceivedState extends CryptoListState {
-  final List<CoinDataDto> coins;
+  final List<({CoinDataDto coin, Color color})> coins;
 
   const CryptoListDataReceivedState({required this.coins});
 

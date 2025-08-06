@@ -1,7 +1,4 @@
-import 'dart:math';
-
 import 'package:cryptomoney/data/http/api/dto/coin_dto.dart';
-import 'package:cryptomoney/extensions/string_extensions.dart';
 import 'package:cryptomoney/features/crypto_list/bloc/crypto_list_bloc.dart';
 import 'package:cryptomoney/features/crypto_list/view/progress_widget.dart';
 import 'package:cryptomoney/resources/app_colors.dart';
@@ -56,15 +53,14 @@ class _CoinsListWidget extends StatefulWidget {
 }
 
 class _CoinsListWidgetState extends State<_CoinsListWidget> {
-  late final List<CoinDataDto> coins;
-  late final Random _random;
+  late final List<({CoinDataDto coin, Color color})> coins;
   late final ScrollController _scrollController;
 
   @override
   void initState() {
     super.initState();
     coins = [];
-    _random = Random();
+
     _scrollController = ScrollController();
 
     WidgetsBinding.instance.addPostFrameCallback(
@@ -80,13 +76,6 @@ class _CoinsListWidgetState extends State<_CoinsListWidget> {
   void dispose() {
     _scrollController.dispose();
     super.dispose();
-  }
-
-  Color _generateRandomColor() {
-    final int colorValue = _random.nextInt(16777216);
-    String hexColor =
-        '#${colorValue.toRadixString(16).padLeft(6, '0').toUpperCase()}';
-    return hexColor.parseColor();
   }
 
   @override
@@ -116,8 +105,8 @@ class _CoinsListWidgetState extends State<_CoinsListWidget> {
               itemBuilder: (context, index) {
                 return CoinItemWidget(
                   key: ValueKey(index),
-                  coin: coins.elementAt(index),
-                  color: _generateRandomColor(),
+                  coin: coins.elementAt(index).coin,
+                  color: coins.elementAt(index).color,
                 );
               },
             );
@@ -126,24 +115,11 @@ class _CoinsListWidgetState extends State<_CoinsListWidget> {
   }
 }
 
-class CoinItemWidget extends StatefulWidget {
+class CoinItemWidget extends StatelessWidget {
   const CoinItemWidget({super.key, required this.coin, required this.color});
 
   final CoinDataDto coin;
   final Color color;
-
-  @override
-  State<CoinItemWidget> createState() => _CoinItemWidgetState();
-}
-
-class _CoinItemWidgetState extends State<CoinItemWidget> {
-  late final Color keepsColor;
-
-  @override
-  void initState() {
-    super.initState();
-    keepsColor = widget.color;
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -161,21 +137,15 @@ class _CoinItemWidgetState extends State<CoinItemWidget> {
                 width: 56,
                 height: 56,
                 decoration: BoxDecoration(
-                  color: keepsColor.withValues(alpha: 0.1),
+                  color: color.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.all(Radius.circular(18)),
                 ),
               ),
               SizedBox(width: 16),
-              Text(
-                widget.coin.symbol.toUpperCase(),
-                style: context.theme.cryptoText,
-              ),
+              Text(coin.symbol.toUpperCase(), style: context.theme.cryptoText),
             ],
           ),
-          Text(
-            widget.coin.priceUsd.toUpperCase(),
-            style: context.theme.cryptoText,
-          ),
+          Text(coin.priceUsd.toUpperCase(), style: context.theme.cryptoText),
         ],
       ),
     );
