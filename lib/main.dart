@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 import 'features/crypto_list/view/crypto_list_page.dart';
 import 'theme/light_theme.dart';
@@ -10,6 +11,8 @@ void main() async {
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
   ]);
+  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
+  await dotenv.load(fileName: 'crypto.env');
   runApp(const MyApp());
 }
 
