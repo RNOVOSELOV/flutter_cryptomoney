@@ -2,7 +2,7 @@
 #  🪙 &nbsp;&nbsp;Coinscap API
 <br/>
 <p align="center">
-  <img src="https://github.com/RNOVOSELOV/flutter_cryptomoney/blob/main/resources/supergeroes.gif"/>
+  <img src="https://github.com/RNOVOSELOV/flutter_cryptomoney/blob/main/resources/crypto.gif"/>
 </p>
 
 ## О проекте
