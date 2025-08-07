@@ -85,14 +85,26 @@ class _CoinsListWidgetState extends State<_CoinsListWidget> {
         if (state is CryptoListDataReceivedState) {
           coins.addAll(state.coins);
         } else if (state is CryptoListErrorReceivedState) {
-          return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Center(
-              child: Text(
-                'Ошибка получения данных\n\nПроверьте наличие crypto.env файла в корне проекта c содержимым в формате:\n'
-                'AUTH_TOKEN=YOUR_AUTH_TOKEN',
-                textAlign: TextAlign.center,
-                style: context.theme.cryptoText,
+          return SizedBox(
+            width: double.infinity,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    'Ошибка получения данных',
+                    textAlign: TextAlign.center,
+                    style: context.theme.cryptoText,
+                  ),
+                  SizedBox(height: 24),
+                  Text(
+                    state.error.userMessage,
+                    textAlign: TextAlign.center,
+                    style: context.theme.cryptoText,
+                  ),
+                ],
               ),
             ),
           );

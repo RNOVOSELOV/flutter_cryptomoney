@@ -35,6 +35,10 @@ enum ApiErrorType {
     responseCode: 400,
     description: 'badRequest',
   ),
+  unauthorized(
+    responseCode: 401,
+    description: 'badRequest',
+  ),
   badRequestPath(
     responseCode: 404,
     description: 'badRequestPath',

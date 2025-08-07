@@ -7,13 +7,7 @@ part of 'api_error_response.dart';
 // **************************************************************************
 
 ApiErrorResponse _$ApiErrorResponseFromJson(Map<String, dynamic> json) =>
-    ApiErrorResponse(
-      responseCode: (json['error'] as num).toInt(),
-      errorText: json['errorText'] as String? ?? '',
-    );
+    ApiErrorResponse(errorText: json['error'] as String);
 
 Map<String, dynamic> _$ApiErrorResponseToJson(ApiErrorResponse instance) =>
-    <String, dynamic>{
-      'error': instance.responseCode,
-      'errorText': instance.errorText,
-    };
+    <String, dynamic>{'error': instance.errorText};
